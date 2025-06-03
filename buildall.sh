@@ -1,0 +1,5 @@
+bash -c "cd 17-almalinux; sh build.sh; sh push.sh"
+bash -c "cd 21-almalinux; sh build.sh; sh push.sh"
+bash -c "cd 22-almalinux; sh build.sh; sh push.sh"
+bash -c "cd 23-almalinux; sh build.sh; sh push.sh"
+bash -c "cd 24-almalinux; sh build.sh; sh push.sh"
