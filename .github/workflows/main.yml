@@ -21,14 +21,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .digest
-          key: almalinux-base-digest-${{ runner.os }}
+          key: base-digest-${{ runner.os }}
           restore-keys: |
-            almalinux-base-digest-
+            base-digest-
 
-      - name: Pull latest Almalinux image and get digest
+      - name: Pull latest tackleza/graalvm:latest image and get digest
         id: check
         run: |
-          LATEST_IMAGE=almalinux:latest
+          LATEST_IMAGE=tackleza/graalvm:latest
 
           echo "Checking latest digest from: $LATEST_IMAGE"
           DIGEST=$(docker pull "$LATEST_IMAGE" | grep Digest | awk '{print $2}')
