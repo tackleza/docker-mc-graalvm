@@ -1,36 +1,77 @@
-## This was build base on my image (tackleza/graalvm)
+# mc-graalvm
 
 Docker Hub: https://hub.docker.com/r/tackleza/mc-graalvm
 
-### Purpose of this images is pre-created user "mc" and expose port 25565
+A Minecraft-compatible Docker image powered by GraalVM, built on AlmaLinux. Pre-configured user `mc` (uid/gid 1000) with Git and nano for server management.
 
-- In this docker template I've create new user called "mc" and the WORKDIR is in /home/mc
-- So please make sure that you mount the dir correctly
-- Please make sure that you have valid permission *uid=1000(mc) gid=1000(mc) groups=1000(mc)*
-- By default. if you run this container. It'll output only java version (java-version). So don't forget to override the command
+## Available Tags
 
-## Please note
-This container run as user `mc`. The working Dir (Home dir) is `/home/mc` so please make sure that you mount your app to valid path. Example below
+| Tag | GraalVM Version | Description |
+|-----|----------------|-------------|
+| `17` | GraalVM CE 17 | Java 17 runtime |
+| `21` | GraalVM CE 21 | Java 21 runtime |
+| `24` | GraalVM CE 24 | Java 24 runtime |
+| `25` | GraalVM CE 25 | Java 25 runtime |
+| `latest` | GraalVM CE 25 | Same as `25` |
 
-## How to use this image
+> **Note:** GraalVM versions 22 and 23 are End-of-Life and have been removed.
 
-### Run this container as bash (Terminal)
-    docker run -it -p 25565:25565 tackleza/mc-graalvm bash
-### Run this container with your startup script
-    docker run -it -p 25565:25565 tackleza/mc-graalvm bash your_start_script.sh
-### Run this container with your java .jar file
-    docker run -it -p 25565:25565 tackleza/mc-graalvm java -jar your_jar.jar
-### Run this container with papermc.jar (more example)
-    docker run -it -v ./data:/home/mc -p 25565:25565 tackleza/mc-graalvm java -jar paper.jar
-### Run this container with auto restart, mount the data to host directory, with java runtime args
-    docker run -it --restart=unless-stopped -v ./data:/home/mc -p 25565:25565 tackleza/mc-graalvm java -Xmx4G -jar paper.jar
+## Image Details
 
-### Notes
+- **OS:** AlmaLinux
+- **User:** `mc` (uid/gid 1000, home `/home/mc`)
+- **Exposed port:** `25565` (Minecraft default)
+- **Installed tools:** Git, nano
 
-- *You can "-v" mount directory as you need*
-- *You can use --restart=unless-stopped for auto restart if your application crash*
-- *You can change the port to something else like -p 4826:25565* In this case, it's will expose port to your host as port 4826
+## Usage
 
-### Additional Installed Tools
-- git
-- nano
+### Start an interactive shell
+
+```bash
+docker run -it -p 25565:25565 tackleza/mc-graalvm bash
+```
+
+### Run with a startup script
+
+```bash
+docker run -it -p 25565:25565 tackleza/mc-graalvm bash your_start_script.sh
+```
+
+### Run a JAR file
+
+```bash
+docker run -it -p 25565:25565 tackleza/mc-graalvm java -jar your_jar.jar
+```
+
+### Run Paper/Minecraft server with a data volume
+
+```bash
+docker run -it \
+  -v ./data:/home/mc \
+  -p 25565:25565 \
+  tackleza/mc-graalvm java -jar paper.jar
+```
+
+### Full example with memory limit and auto-restart
+
+```bash
+docker run -d \
+  --restart=unless-stopped \
+  -v ./data:/home/mc \
+  -p 25565:25565 \
+  tackleza/mc-graalvm java -Xmx4G -Xms2G -jar paper.jar
+```
+
+## Important Notes
+
+- **Mount your data to `/home/mc`** — the container runs as user `mc` and the home directory is `/home/mc`. Always mount a volume to `./data:/home/mc` so your server world and configs persist.
+- **Permission:** Ensure your host directory is owned by uid/gid 1000 (`mc:mc`).
+- **Port:** The default exposed port is 25565. Remap with `-p 4826:25565` if you need a different host port.
+- **Java version output:** By default, running the container without a command will just output the Java version. Override the command to launch your server.
+
+## Installed Tools
+
+| Tool | Purpose |
+|------|---------|
+| Git | Source code / plugin management |
+| nano | Terminal text editor for config files |
