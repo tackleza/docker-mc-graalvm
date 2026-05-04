@@ -1,6 +1,7 @@
 # mc-graalvm
 
-Docker Hub: https://hub.docker.com/r/tackleza/mc-graalvm
+**GitHub:** https://github.com/tackleza/docker-mc-graalvm
+**Docker Hub:** https://hub.docker.com/r/tackleza/mc-graalvm
 
 A Minecraft-compatible Docker image powered by GraalVM, built on AlmaLinux. Pre-configured user `mc` (uid/gid 1000) with Git and nano for server management.
 
