@@ -22,7 +22,7 @@ A Minecraft-compatible Docker image powered by GraalVM, built on AlmaLinux. Pre-
 ## Image Details
 
 - **OS:** AlmaLinux
-- **User:** `mc` (uid/gid 1000, home `/home/mc`)
+- **User:** `mc` (home `/home/mc`, UID auto-mapped to volume owner at startup)
 - **Exposed port:** `25565` (Minecraft default)
 - **Installed tools:** Git, nano
 
@@ -67,8 +67,8 @@ docker run -d \
 
 ## Important Notes
 
-- **Mount your data to `/home/mc`** — the container runs as user `mc` and the home directory is `/home/mc`. Always mount a volume to `./data:/home/mc` so your server world and configs persist.
-- **Permission:** Ensure your host directory is owned by uid/gid 1000 (`mc:mc`).
+- **Mount your data to `/home/mc`** — always mount a volume to `./data:/home/mc` so your server world and configs persist.
+- **Permission:** Automatically handled. The container detects the UID/GID of whoever owns the mounted `/home/mc` and remaps the `mc` user to match — works under any Linux user without manual `chown`. Override with `MC_UID`/`MC_GID` env vars if needed.
 - **Port:** The default exposed port is 25565. Remap with `-p 4826:25565` if you need a different host port.
 - **Java version output:** By default, running the container without a command will just output the Java version. Override the command to launch your server.
 
