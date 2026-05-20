@@ -69,6 +69,7 @@ docker run -d \
 
 - **Mount your data to `/home/mc`** — always mount a volume to `./data:/home/mc` so your server world and configs persist.
 - **Permission:** Automatically handled. The container detects the UID/GID of whoever owns the mounted `/home/mc` and remaps the `mc` user to match — works under any Linux user without manual `chown`. Override with `MC_UID`/`MC_GID` env vars if needed.
+- **User:** **Do NOT specify `--user mc`** when running the container. The entrypoint script automatically remaps the `mc` user to match your mounted volume. Setting `--user` prevents the entrypoint from running as root and breaks the UID remapping.
 - **Port:** The default exposed port is 25565. Remap with `-p 4826:25565` if you need a different host port.
 - **Java version output:** By default, running the container without a command will just output the Java version. Override the command to launch your server.
 
